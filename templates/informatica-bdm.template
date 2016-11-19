@@ -1136,7 +1136,7 @@
             },
             "CreationPolicy": {
                 "ResourceSignal": {
-                    "Timeout": "PT1H45M"
+                    "Timeout": "PT3H"
                 }
             }
         }
