@@ -546,17 +546,6 @@
         "InfaDB": {
             "Type": "AWS::RDS::DBInstance",
             "Properties": {
-                "DBInstanceIdentifier": {
-                    "Fn::Join": [
-                        "",
-                        [
-                            "infadb-",
-                            {
-                                "Ref": "AWS::StackName"
-                            }
-                        ]
-                    ]
-                },
                 "AllocatedStorage": "200",
                 "DBInstanceClass": "db.m4.large",
                 "DBSubnetGroupName": {
