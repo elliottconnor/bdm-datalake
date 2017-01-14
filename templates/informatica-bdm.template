@@ -288,28 +288,28 @@
     "Mappings": {
         "AWSAMIRegionMap": {
             "AMI": {
-                "INFORMATICABDMHVM": "Informatica BDM Administration Image"
+                "INFABDMHVM": "Informatica BDM Administration Image"
             },
             "ap-northeast-1": {
-                "INFORMATICABDMHVM": "ami-509b2f31"
+                "INFABDMHVM": "ami-509b2f31"
             },
             "ap-northeast-2": {
-                "INFORMATICABDMHVM": "ami-6cab7c02"
+                "INFABDMHVM": "ami-6cab7c02"
             },
             "ap-southeast-2": {
-                "INFORMATICABDMHVM": "ami-d2053bb1"
+                "INFABDMHVM": "ami-d2053bb1"
             },
             "eu-west-1": {
-                "INFORMATICABDMHVM": "ami-9a4815e9"
+                "INFABDMHVM": "ami-9a4815e9"
             },
             "sa-east-1": {
-                "INFORMATICABDMHVM": "ami-6ada4406"
+                "INFABDMHVM": "ami-6ada4406"
             },
             "us-east-1": {
-                "INFORMATICABDMHVM": "ami-e396a1f4"
+                "INFABDMHVM": "ami-e396a1f4"
             },
             "us-west-2": {
-                "INFORMATICABDMHVM": "ami-3b79d55b"
+                "INFABDMHVM": "ami-3b79d55b"
             }
         },
         "AWSInfoRegionMap": {
@@ -1010,7 +1010,7 @@
                         {
                             "Ref": "AWS::Region"
                         },
-                        "INFORMATICABDMHVM"
+                        "INFABDMHVM"
                     ]
                 },
                 "InstanceType": {
