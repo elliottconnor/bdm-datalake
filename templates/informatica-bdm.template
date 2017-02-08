@@ -343,6 +343,16 @@
             }
         }
     },
+    "Conditions": {
+        "NoEMRLogBucketCondition": {
+            "Fn::Equals": [
+                "",
+                {
+                    "Ref": "EMRLogBucket"
+                }
+            ]
+        }
+    },
     "Resources": {
         "EMRCluster": {
             "Type": "AWS::EMR::Cluster",
@@ -409,14 +419,22 @@
                 "ReleaseLabel": "emr-4.6.0",
                 "ServiceRole": "EMR_DefaultRole",
                 "LogUri": {
-                    "Fn::Join": [
-                        "",
-                        [
-                            "s3://",
-                            {
-                                "Ref": "EMRLogBucket"
-                            }
-                        ]
+                    "Fn::If": [
+                        "NoEMRLogBucketCondition",
+                        {
+                            "Ref": "AWS::NoValue"
+                        },
+                        {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "s3://",
+                                    {
+                                        "Ref": "EMRLogBucket"
+                                    }
+                                ]
+                            ]
+                        }
                     ]
                 },
                 "Applications": [
