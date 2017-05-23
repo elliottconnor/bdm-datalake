@@ -1,6 +1,6 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "This template creates a VPC infrastructure with a deployment of Informatica Big Data Management. It will deploy a bastion and managed NAT gateways or NAT instances into the public subnet for each Availability Zone. **WARNING** This template creates Amazon EC2 instance and related resources. You will be billed for the AWS resources used if you create a stack from this template.",
+    "Description": "This template creates a VPC infrastructure with a deployment of Informatica Big Data Management. It will deploy a bastion and managed NAT gateways or NAT instances into the public subnet for each Availability Zone. **WARNING** This template creates Amazon EC2 instance and related resources. You will be billed for the AWS resources used if you create a stack from this template QS(5014).",
     "Metadata": {
         "AWS::CloudFormation::Interface": {
             "ParameterGroups": [
@@ -145,14 +145,14 @@
             "Type": "List<AWS::EC2::AvailabilityZone::Name>"
         },
         "DBPassword": {
-            "Description": "Password for the Informatica domain and the Model repository database instance",
+            "Description": "Password for the Informatica domain and the Model repository database instance. Minimum Length: 8 characters, Maximum Length: 18 characters",
             "MaxLength": "18",
             "MinLength": "8",
             "NoEcho": "True",
             "Type": "String"
         },
         "DBUser": {
-            "Description": "Username for the Informatica domain and the Model repository database instance",
+            "Description": "Username for the Informatica domain and the Model repository database instance. Minimum Length: 8 characters, Maximum Length: 18 characters",
             "MaxLength": "18",
             "MinLength": "8",
             "Type": "String"
@@ -163,19 +163,14 @@
         },
         "EMRCoreInstanceType": {
             "AllowedValues": [
-                "m3.xlarge",
-                "m3.2xlarge",
-                "m4.large",
                 "m4.xlarge",
                 "m4.2xlarge",
-                "c3.large",
-                "c3.xlarge",
-                "c3.2xlarge",
-                "c4.large",
-                "c4.xlarge",
-                "c4.2xlarge"
+                "m4.4xlarge",
+                "m4.10xlarge",
+                "c4.2xlarge",
+                "c4.4xlarge"
             ],
-            "Default": "m3.xlarge",
+            "Default": "m4.xlarge",
             "Description": "Enter the instance type for the EMR core nodes. Default is m3.xlarge",
             "Type": "String"
         },
@@ -191,19 +186,16 @@
         },
         "EMRMasterInstanceType": {
             "AllowedValues": [
-                "m3.xlarge",
-                "m3.2xlarge",
                 "m4.large",
                 "m4.xlarge",
                 "m4.2xlarge",
-                "c3.large",
-                "c3.xlarge",
-                "c3.2xlarge",
-                "c4.large",
+                "m4.4xlarge",
+                "m4.10xlarge",
                 "c4.xlarge",
-                "c4.2xlarge"
+                "c4.2xlarge",
+                "c4.4xlarge"
             ],
-            "Default": "m3.xlarge",
+            "Default": "m4.xlarge",
             "Description": "Enter the instance type for the EMR master node. Default is m3.xlarge",
             "Type": "String"
         },
@@ -282,10 +274,10 @@
             "Type": "String"
         },
         "QSS3KeyPrefix": {
-            "AllowedPattern": "^[0-9a-zA-Z-]+(/[0-9a-zA-Z-]+)*$",
+            "AllowedPattern": "^[0-9a-zA-Z-/]*$",
             "ConstraintDescription": "Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.",
-            "Default": "informatica/bdm/latest",
-            "Description": "S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.",
+            "Default": "informatica/bdm/latest/",
+            "Description": "S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start with forward slash (/) because they are automatically appended and must end with forward slash (/).",
             "Type": "String"
         },
         "RemoteAccessCIDR": {
@@ -302,65 +294,13 @@
             "Type": "String"
         }
     },
-    "Mappings": {
-        "AWSInfoRegionMap": {
-            "ap-northeast-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "ap-northeast-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "ap-southeast-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "eu-west-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "sa-east-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "us-east-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            },
-            "us-west-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
-            }
-        }
-    },
     "Resources": {
         "VPCStack": {
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
                 "TemplateURL": {
-                    "Fn::Join": [
-                        "/",
-                        [
-                            {
-                                "Fn::FindInMap": [
-                                    "AWSInfoRegionMap",
-                                    {
-                                        "Ref": "AWS::Region"
-                                    },
-                                    "QuickStartS3URL"
-                                ]
-                            },
-                            {
-                                "Ref": "QSS3BucketName"
-                            },
-                            {
-                                "Ref": "QSS3KeyPrefix"
-                            },
-                            "submodules/quickstart-aws-vpc",
-                            "templates/aws-vpc.template"
-                        ]
-                    ]
+                    "Fn::Sub": 
+                        "https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-aws-vpc/templates/aws-vpc.template"
                 },
                 "Parameters": {
                     "AvailabilityZones": {
@@ -398,27 +338,9 @@
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
                 "TemplateURL": {
-                    "Fn::Join": [
-                        "/",
-                        [
-                            {
-                                "Fn::FindInMap": [
-                                    "AWSInfoRegionMap",
-                                    {
-                                        "Ref": "AWS::Region"
-                                    },
-                                    "QuickStartS3URL"
-                                ]
-                            },
-                            {
-                                "Ref": "QSS3BucketName"
-                            },
-                            {
-                                "Ref": "QSS3KeyPrefix"
-                            },
-                            "templates/informatica-bdm.template"
-                        ]
-                    ]
+                    "Fn::Sub": 
+                        "https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/informatica-bdm.template"
+                    
                 },
                 "Parameters": {
                     "DBPassword": {
@@ -484,12 +406,6 @@
                             "VPCStack",
                             "Outputs.PublicSubnet1ID"
                         ]
-                    },
-                    "QSS3BucketName": {
-                        "Ref": "QSS3BucketName"
-                    },
-                    "QSS3KeyPrefix": {
-                        "Ref": "QSS3KeyPrefix"
                     },
                     "RemoteAccessCIDR": {
                         "Ref": "RemoteAccessCIDR"
