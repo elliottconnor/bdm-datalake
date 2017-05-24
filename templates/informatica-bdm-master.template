@@ -1,6 +1,6 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "This template creates a VPC infrastructure with a deployment of Informatica Big Data Management. It will deploy a bastion and managed NAT gateways or NAT instances into the public subnet for each Availability Zone. **WARNING** This template creates Amazon EC2 instance and related resources. You will be billed for the AWS resources used if you create a stack from this template QS(5014).",
+    "Description": "This template creates a VPC infrastructure with a deployment of Informatica Big Data Management. It will deploy a bastion and managed NAT gateways or NAT instances into the public subnet for each Availability Zone. **WARNING** This template creates Amazon EC2 instance and related resources. You will be billed for the AWS resources used if you create a stack from this template.",
     "Metadata": {
         "AWS::CloudFormation::Interface": {
             "ParameterGroups": [
@@ -166,9 +166,7 @@
                 "m4.xlarge",
                 "m4.2xlarge",
                 "m4.4xlarge",
-                "m4.10xlarge",
-                "c4.2xlarge",
-                "c4.4xlarge"
+                "m4.10xlarge"
             ],
             "Default": "m4.xlarge",
             "Description": "Enter the instance type for the EMR core nodes. Default is m3.xlarge",
@@ -190,10 +188,7 @@
                 "m4.xlarge",
                 "m4.2xlarge",
                 "m4.4xlarge",
-                "m4.10xlarge",
-                "c4.xlarge",
-                "c4.2xlarge",
-                "c4.4xlarge"
+                "m4.10xlarge"
             ],
             "Default": "m4.xlarge",
             "Description": "Enter the instance type for the EMR master node. Default is m3.xlarge",
@@ -223,9 +218,6 @@
                 "m4.2xlarge",
                 "m4.4xlarge",
                 "m4.10xlarge",
-                "m3.large",
-                "m3.xlarge",
-                "m3.2xlarge",
                 "c3.xlarge",
                 "c3.2xlarge",
                 "c3.4xlarge"
@@ -277,7 +269,7 @@
             "AllowedPattern": "^[0-9a-zA-Z-/]*$",
             "ConstraintDescription": "Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.",
             "Default": "informatica/bdm/latest/",
-            "Description": "S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start with forward slash (/) because they are automatically appended and must end with forward slash (/).",
+            "Description": "S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).",
             "Type": "String"
         },
         "RemoteAccessCIDR": {

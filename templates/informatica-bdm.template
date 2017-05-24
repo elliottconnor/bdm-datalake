@@ -93,15 +93,15 @@
                 },
                 "InformaticaBDMKeyS3Bucket": {
                     "default": "BDM License Key Location"
-                },   
+                },
                 "InformaticaServerInstanceType": {
                     "default": "Informatica Domain Instance Type"
                 },
-                "PublicSubnet1ID": {
-                    "default": "Informatica Domain Subnet"
-                },
                 "KeyPairName": {
                     "default": "Key Pair Name"
+                },
+                "PublicSubnet1ID": {
+                    "default": "Informatica Domain Subnet"
                 },
                 "RemoteAccessCIDR": {
                     "default": "IP Address Range"
@@ -129,7 +129,7 @@
             "Type": "String",
             "MinLength": "8",
             "MaxLength": "18"
-        },        
+        },
         "EMRClusterName": {
             "Description": "Enter a name for your EMR cluster",
             "Type": "String"
@@ -141,9 +141,7 @@
                 "m4.xlarge",
                 "m4.2xlarge",
                 "m4.4xlarge",
-                "m4.10xlarge",
-                "c4.2xlarge",
-                "c4.4xlarge"
+                "m4.10xlarge"
             ],
             "Description": "Enter the instance type for the EMR core nodes. Default is m4.xlarge"
         },
@@ -165,10 +163,7 @@
                 "m4.xlarge",
                 "m4.2xlarge",
                 "m4.4xlarge",
-                "m4.10xlarge",
-                "c4.xlarge",
-                "c4.2xlarge",
-                "c4.4xlarge"
+                "m4.10xlarge"
             ],
             "Description": "Enter the instance type for the EMR master node. Default is m3.xlarge"
         },
@@ -198,22 +193,19 @@
                 "m4.2xlarge",
                 "m4.4xlarge",
                 "m4.10xlarge",
-                "m3.large",
-                "m3.xlarge",
-                "m3.2xlarge",
                 "c3.xlarge",
                 "c3.2xlarge",
                 "c3.4xlarge"
             ],
             "Description": "Enter the instance type for the Informatica Administrator. Default is m4.large"
         },
-        "PublicSubnet1ID": {
-            "Description": "Select a publically accessible subnet ID for the Informatica Domain",
-            "Type": "AWS::EC2::Subnet::Id"
-        },
         "KeyPairName": {
             "Description": "Name of an existing EC2 KeyPair to enable SSH access to the Informatica Domain",
             "Type": "AWS::EC2::KeyPair::KeyName"
+        },
+        "PublicSubnet1ID": {
+            "Description": "Select a publically accessible subnet ID for the Informatica Domain",
+            "Type": "AWS::EC2::Subnet::Id"
         },
         "RemoteAccessCIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
@@ -288,13 +280,13 @@
             }
         }
     },
-    "Conditions": {
-        "CreateProdResources": {
+     "Conditions": {
+        "NoEMRLogBucketCondition": {
             "Fn::Equals": [
+                "",
                 {
-                    "Ref": "EMRClusterName"
-                },
-                "prod"
+                    "Ref": "EMRLogBucket"
+                }
             ]
         }
     },
@@ -390,14 +382,22 @@
                 "ReleaseLabel": "emr-5.0.0",
                 "ServiceRole": "EMR_DefaultRole",
                 "LogUri": {
-                    "Fn::Join": [
-                        "",
-                        [
-                            "s3://",
-                            {
-                                "Ref": "EMRLogBucket"
-                            }
-                        ]
+                    "Fn::If": [
+                        "NoEMRLogBucketCondition",
+                        {
+                            "Ref": "AWS::NoValue"
+                        },
+                        {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "s3://",
+                                    {
+                                        "Ref": "EMRLogBucket"
+                                    }
+                                ]
+                            ]
+                        }
                     ]
                 },
                 "Applications": [
@@ -732,27 +732,6 @@
                 ]
             }
         },
-        "EMRInstanceRole": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-                "AssumeRolePolicyDocument": {
-                    "Statement": [
-                        {
-                            "Effect": "Allow",
-                            "Principal": {
-                                "Service": [
-                                    "ec2.amazonaws.com"
-                                ]
-                            },
-                            "Action": [
-                                "sts:AssumeRole"
-                            ]
-                        }
-                    ]
-                },
-                "Path": "/"
-            }
-        },
         "RolePolicies": {
             "Type": "AWS::IAM::Policy",
             "Properties": {
@@ -787,17 +766,6 @@
                 "Roles": [
                     {
                         "Ref": "InstanceRole"
-                    }
-                ]
-            }
-        },
-        "EMRInstanceProfile": {
-            "Type": "AWS::IAM::InstanceProfile",
-            "Properties": {
-                "Path": "/",
-                "Roles": [
-                    {
-                        "Ref": "EMRInstanceRole"
                     }
                 ]
             }
