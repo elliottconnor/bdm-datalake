@@ -280,7 +280,7 @@
             }
         }
     },
-     "Conditions": {
+    "Conditions": {
         "NoEMRLogBucketCondition": {
             "Fn::Equals": [
                 "",
