@@ -280,7 +280,7 @@
             }
         }
     },
-     "Conditions": {
+    "Conditions": {
         "NoEMRLogBucketCondition": {
             "Fn::Equals": [
                 "",
@@ -427,20 +427,6 @@
                 "Tags": [
                     {
                         "Key": "prod",
-                        "Value": {
-                            "Fn::Join": [
-                                "",
-                                [
-                                    "EMR-",
-                                    {
-                                        "Ref": "EMRClusterName"
-                                    }
-                                ]
-                            ]
-                        }
-                    },
-                    {
-                        "Key": "Name",
                         "Value": {
                             "Fn::Join": [
                                 "",
@@ -1102,7 +1088,6 @@
                                                 "Ref": "AWS::StackName"
                                             },
                                             "\n",
-                                            "credential-file=/etc/cfn/cfn-credentials\n",
                                             "interval=1\n",
                                             "region=",
                                             {
