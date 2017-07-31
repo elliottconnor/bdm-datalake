@@ -17,7 +17,7 @@
     },
     {
         "ParameterKey": "EMRCoreInstanceType",
-        "ParameterValue": "m3.xlarge"
+        "ParameterValue": "m4.xlarge"
     },
     {
         "ParameterKey": "EMRCoreNodes",
