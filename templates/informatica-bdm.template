@@ -154,7 +154,7 @@
         "EMRLogBucket": {
             "Description": "Enter the S3 bucket for the EMR logs",
             "Type": "String"
-        }, 
+        },
         "EMRMasterInstanceType": {
             "Type": "String",
             "Default": "m4.xlarge",
@@ -271,7 +271,7 @@
             },
             "us-east-1": {
                 "INFABDMHVM": "ami-304d2226"
-            },  
+            },
             "us-west-1": {
                 "INFABDMHVM": "ami-746f4914"
             },
@@ -306,8 +306,8 @@
                                     "yarn.scheduler.maximum-allocation-mb": "8192",
                                     "yarn.nodemanager.vmem-check-enabled": "false"
                                 }
-							},
-							{
+                            },
+                            {
                                 "Classification": "core-site",
                                 "ConfigurationProperties": {
                                     "hadoop.proxyuser.ec2-user.hosts": "*",
@@ -323,7 +323,7 @@
                         "Name": "Master"
                     },
                     "CoreInstanceGroup": {
-						"Configurations": [
+                        "Configurations": [
                             {
                                 "Classification": "yarn-site",
                                 "ConfigurationProperties": {
@@ -341,7 +341,7 @@
                                     "hadoop.proxyuser.ec2-user.groups": "*"
                                 }
                             }
-                        ],					
+                        ],
                         "InstanceCount": {
                             "Ref": "EMRCoreNodes"
                         },
@@ -787,7 +787,7 @@
                                         "s3:Get*",
                                         "s3:List*"
                                     ],
-                                    "Resource": [ 
+                                    "Resource": [
                                         {
                                             "Fn::Sub": "arn:aws:s3:::${BootstrapS3Bucket}/*"
                                         },
@@ -795,7 +795,6 @@
                                             "Fn::Sub": "arn:aws:s3:::${BootstrapS3Bucket}"
                                         }
                                     ]
-
                                 }
                             ]
                         }
@@ -894,12 +893,12 @@
                                             "sudo tar -xvf $INFA_RPM_FILE_PREFIX.U1-Linux-x64.tar\n",
                                             "sudo tar -xvf $INFA_RPM_FILE_PREFIX.U2-Linux-x64.tar\n",
                                             "sudo chmod 777 -R $TEMP_DIR\n",
-                                            "sudo cp SilentInput.properties EBF1011U1_HadoopEBF/SilentInput.properties\n", 
+                                            "sudo cp SilentInput.properties EBF1011U1_HadoopEBF/SilentInput.properties\n",
                                             "sudo cp InformaticaHadoopEBFInstall.sh EBF1011U1_HadoopEBF/InformaticaHadoopEBFInstall.sh\n",
-                                            "sudo cp SilentInput.properties EBF1011U2_HadoopEBF/SilentInput.properties\n", 
+                                            "sudo cp SilentInput.properties EBF1011U2_HadoopEBF/SilentInput.properties\n",
                                             "sudo cp InformaticaHadoopEBFInstall.sh EBF1011U2_HadoopEBF/InformaticaHadoopEBFInstall.sh\n",
                                             "cd EBF1011U1_HadoopEBF\n",
-                                            "sudo ./InformaticaHadoopEBFInstall.sh -i silent\n", 
+                                            "sudo ./InformaticaHadoopEBFInstall.sh -i silent\n",
                                             "cd $TEMP_DIR/EBF1011U2_HadoopEBF\n",
                                             "sudo ./InformaticaHadoopEBFInstall.sh -i silent\n",
                                             "sudo rm -rf $TEMP_DIR/\n",
@@ -1039,7 +1038,6 @@
                         "Key": "EMRBootstrapInstance",
                         "Value": "prod"
                     }
-
                 ]
             }
         },
@@ -1194,8 +1192,8 @@
                                 "owner": "ec2-user",
                                 "group": "ec2-user"
                             },
-                            "/home/ec2-user/Mercury_Setup/ebfinstall.sh" : {
-                                "content" : {
+                            "/home/ec2-user/Mercury_Setup/ebfinstall.sh": {
+                                "content": {
                                     "Fn::Join": [
                                         "",
                                         [
@@ -1205,7 +1203,7 @@
                                             "sudo ./installEBF.sh\n",
                                             "cd /home/ec2-user/Mercury_Setup/1011U2\n",
                                             "sudo ./installEBF.sh\n",
-											"sudo chown -R ec2-user /opt/informatica\n",
+                                            "sudo chown -R ec2-user /opt/informatica\n",
                                             "runuser -l ec2-user -c '/opt/informatica/tomcat/bin/infaservice.sh startup'"
                                         ]
                                     ]
@@ -1326,7 +1324,7 @@
                                 }
                             },
                             "04_EBFSetup": {
-                                "command" : "sudo /home/ec2-user/Mercury_Setup/ebfinstall.sh"
+                                "command": "sudo /home/ec2-user/Mercury_Setup/ebfinstall.sh"
                             },
                             "05_YarnSetup": {
                                 "command": "sudo /home/ec2-user/Mercury_Setup/yarninstall.sh"
@@ -1422,10 +1420,10 @@
                     }
                 }
             },
-            "CreationPolicy": {     
-                "ResourceSignal": {     
-                    "Timeout": "PT3H"       
-                }                       
+            "CreationPolicy": {
+                "ResourceSignal": {
+                    "Timeout": "PT3H"
+                }
             },
             "DependsOn": "EMRCluster"
         }
