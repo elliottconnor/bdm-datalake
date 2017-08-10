@@ -243,40 +243,40 @@
     "Mappings": {
         "AWSAMIRegionMap": {
             "AMI": {
-                "INFABDMHVM": "Informatica BDM 10.1.1 update 2 Administration Image"
+                "INFABDMHVM": "Informatica BDM-10.1.1-U2Administrator-RHEL-7.2_HVM_v8-cd43828b-511e-4d5c-a443-a0b03569a334-ami-304d2226.4"
             },
             "ap-northeast-1": {
-                "INFABDMHVM": "ami-50162737"
+                "INFABDMHVM": "ami-83e2d9e4"
             },
             "ap-northeast-2": {
-                "INFABDMHVM": "ami-6ede0300"
+                "INFABDMHVM": "ami-666ab708"
             },
             "ap-south-1": {
-                "INFABDMHVM": "ami-36dba959"
+                "INFABDMHVM": "ami-3dd4a952"
             },
             "ap-southeast-1": {
-                "INFABDMHVM": "ami-b509b3d6"
+                "INFABDMHVM": "ami-15d65076"
             },
             "ap-southeast-2": {
-                "INFABDMHVM": "ami-b5d9d2d6"
+                "INFABDMHVM": "ami-06abbe65"
             },
             "eu-central-1": {
-                "INFABDMHVM": "ami-df4f90b0"
+                "INFABDMHVM": "ami-4435ed2b"
             },
             "eu-west-1": {
-                "INFABDMHVM": "ami-56b8b530"
+                "INFABDMHVM": "ami-6b2d380d"
             },
             "sa-east-1": {
-                "INFABDMHVM": "ami-318ee25d"
+                "INFABDMHVM": "ami-20bdd34c"
             },
             "us-east-1": {
-                "INFABDMHVM": "ami-304d2226"
+                "INFABDMHVM": "ami-ecf7b0fa"
             },
             "us-west-1": {
-                "INFABDMHVM": "ami-746f4914"
+                "INFABDMHVM": "ami-c77c5ca7"
             },
             "us-west-2": {
-                "INFABDMHVM": "ami-9dbb20fd"
+                "INFABDMHVM": "ami-13f69773"
             }
         }
     },
