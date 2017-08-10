@@ -831,7 +831,26 @@
                         }
                     ]
                 },
-                "Path": "/"
+                "Path": "/",
+                "Policies": [
+                    {
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Action": [
+                                        "s3:PutObject"
+                                    ],
+                                    "Resource": {
+                                        "Fn::Sub": "arn:aws:s3:::${BootstrapS3Bucket}/*"
+                                    },
+                                    "Effect": "Allow"
+                                }
+                            ]
+                        },
+                        "PolicyName": "bootstrap-s3-policy"
+                    }
+                ]
             }
         },
         "InstanceProfile": {
@@ -949,7 +968,7 @@
                                                 "Ref": "BootstrapS3Bucket"
                                             },
                                             "/SilentInput.properties\n",
-                                            "/opt/aws/bin/cfn-signal -e 0 --stack ",
+                                            "/opt/aws/bin/cfn-signal -e $? --stack ",
                                             {
                                                 "Ref": "AWS::StackName"
                                             },
