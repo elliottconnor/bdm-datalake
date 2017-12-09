@@ -48,6 +48,18 @@
                         "DBPassword"
                     ]
                 },
+								{
+                    "Label": {
+                        "default": "Redshift Configurations"
+                    },
+                    "Parameters": [
+                        "RedshiftUsername",
+                        "RedshiftPassword",
+                        "RedshiftDbName",
+						"RedshiftNodeType",
+						"RedshiftNumberOfNodes"
+                    ]
+                },
                 {
                     "Label": {
                         "default": "Informatica Big Data Management Configuration"
@@ -157,6 +169,39 @@
             "MinLength": "8",
             "Type": "String"
         },
+		"RedshiftUsername": {
+            "Description": "RedShift Username",
+            "Type": "String"
+        },
+        "RedshiftPassword": {
+            "Description": "Password for Redshift. Must contain at least one upper case letter and one number",
+            "NoEcho": true,
+            "Type": "String",
+			"MinLength": 8,
+            "MaxLength": 28,
+            "AllowedPattern": "[a-zA-Z0-9!^*\\-_+]*"
+        },
+        "RedshiftDbName": {
+            "Description": "RedShift Database name",
+            "Type": "String"
+        },
+		"RedshiftNodeType": {
+            "AllowedValues": [
+                "dc2.large",
+                "dc2.8xlarge",
+                "ds2.xlarge",
+                "ds2.8xlarge"
+            ],
+            "ConstraintDescription": "must be a valid RedShift node type.",
+            "Default": "dc2.large",
+            "Description": "The node type to for the redshift cluster",
+            "Type": "String"
+        },
+		"RedshiftNumberOfNodes": {
+            "Default": "1",
+            "Description": "The number of nodes in the redshift cluster.",
+            "Type": "Number"
+        },
         "EMRClusterName": {
             "Description": "Enter a name for your EMR cluster",
             "Type": "String"
@@ -175,7 +220,7 @@
                 "c4.xlarge",
                 "c4.2xlarge"
             ],
-            "Default": "m3.xlarge",
+            "Default": "m4.large",
             "Description": "Enter the instance type for the EMR core nodes. Default is m3.xlarge",
             "Type": "String"
         },
@@ -203,7 +248,7 @@
                 "c4.xlarge",
                 "c4.2xlarge"
             ],
-            "Default": "m3.xlarge",
+            "Default": "m4.large",
             "Description": "Enter the instance type for the EMR master node. Default is m3.xlarge",
             "Type": "String"
         },
@@ -446,6 +491,20 @@
                     "DBUser": {
                         "Ref": "DBUser"
                     },
+					"RedshiftSubnetA": {"Fn::GetAtt": [
+                                        "VPCStack",
+                                        "Outputs.PrivateSubnet1AID"
+                                    ]},
+                    "RedshiftSubnetB": { "Fn::GetAtt": [
+                                        "VPCStack",
+                                        "Outputs.PrivateSubnet2AID"
+                                    ] },
+                    "RedshiftUsername": { "Ref": "RedshiftUsername" },
+                    "RedshiftPassword": { "Ref": "RedshiftPassword" },
+                    "RedshiftDbName": { "Ref": "RedshiftDbName" },
+                    "RedshiftPort": "5439",
+                    "RedshiftNodeType": { "Ref": "RedshiftNodeType" },
+                    "RedshiftNumberOfNodes": { "Ref": "RedshiftNumberOfNodes" },
                     "EMRClusterName": {
                         "Ref": "EMRClusterName"
                     },

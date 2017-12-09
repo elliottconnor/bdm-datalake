@@ -45,6 +45,21 @@
                         "DBPassword"
                     ]
                 },
+				{
+                    "Label": {
+                        "default": "Redshift Configurations"
+                    },
+                    "Parameters": [
+                        "RedshiftSubnetA",
+                        "RedshiftSubnetB",
+                        "RedshiftUsername",
+                        "RedshiftPassword",
+                        "RedshiftDbName",
+                        "RedshiftPort",
+						"RedshiftNodeType",
+						"RedshiftNumberOfNodes"
+                    ]
+                },
                 {
                     "Label": {
                         "default": "Informatica Big Data Management Configuration"
@@ -145,6 +160,52 @@
             "MinLength": "8",
             "Type": "String"
         },
+		"RedshiftSubnetA": {
+            "Description": "Redshift subnet A",
+            "Type": "AWS::EC2::Subnet::Id"
+        },
+        "RedshiftSubnetB": {
+            "Description": "Redshift subnet B",
+            "Type": "AWS::EC2::Subnet::Id"
+        },
+        "RedshiftUsername": {
+            "Description": "RedShift Username",
+            "Type": "String"
+        },
+        "RedshiftPassword": {
+            "Description": "Password for Redshift. Must contain at least one upper case letter and one number",
+            "NoEcho": true,
+            "Type": "String",
+			"MinLength": 8,
+            "MaxLength": 28,
+            "AllowedPattern": "[a-zA-Z0-9!^*\\-_+]*"
+        },
+        "RedshiftDbName": {
+            "Description": "RedShift Database name",
+            "Type": "String"
+        },
+        "RedshiftPort": {
+            "Description": "RedShift Port",
+            "Type": "String",
+            "Default": "5439"
+        },
+		"RedshiftNodeType": {
+            "AllowedValues": [
+                "dc2.large",
+                "dc2.8xlarge",
+                "ds2.xlarge",
+                "ds2.8xlarge"
+            ],
+            "ConstraintDescription": "must be a valid RedShift node type.",
+            "Default": "dc2.large",
+            "Description": "The node type to for the redshift cluster",
+            "Type": "String"
+        },
+		"RedshiftNumberOfNodes": {
+            "Default": "1",
+            "Description": "The number of nodes in the redshift cluster.",
+            "Type": "Number"
+        },
         "EMRClusterName": {
             "Description": "Enter a name for your EMR cluster",
             "Type": "String"
@@ -241,7 +302,7 @@
         "QSS3BucketName": {
             "AllowedPattern": "^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$",
             "ConstraintDescription": "Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
-            "Default": "quickstart-reference",
+            "Default": "elliottinformaticadatalake",
             "Description": "S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
             "Type": "String"
         },
@@ -341,6 +402,13 @@
                 "Partition": "aws",
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             }
+        }
+    },
+	"Conditions": {
+		"IsMultiNodeCluster": {
+            "Fn::Not": [
+                { "Fn::Equals": [ "1", { "Ref": "RedshiftNumberOfNodes" } ] }
+            ]
         }
     },
     "Resources": {
@@ -577,6 +645,48 @@
                     "Ref": "DBPassword"
                 },
                 "MultiAZ": true
+            }
+        },
+		"RedshiftSubnetGroup": {
+            "Type": "AWS::Redshift::ClusterSubnetGroup",
+            "Properties": {
+                "Description": "RedShift Subnet linked to both private database subnets",
+                "SubnetIds": [
+                    { "Ref": "RedshiftSubnetA" },
+                    { "Ref": "RedshiftSubnetB" }
+                ]
+            }
+        },
+        "RedshiftInstance": {
+            "Type": "AWS::Redshift::Cluster",
+            "DependsOn": [ "RedshiftSubnetGroup" ],
+            "Properties": {
+                "ClusterSubnetGroupName": { "Ref": "RedshiftSubnetGroup" },
+                "ClusterType": {
+                    "Fn::If": [
+                        "IsMultiNodeCluster",
+                        "multi-node",
+                        "single-node"
+                    ]
+                },
+                "NodeType": { "Ref": "RedshiftNodeType" },
+				"NumberOfNodes": {
+                    "Fn::If": [
+                        "IsMultiNodeCluster",
+                        {
+                            "Ref": "RedshiftNumberOfNodes"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                },
+                "VpcSecurityGroupIds": [ { "Ref": "InfaDBSecurityGroup" } ],
+                "DBName": { "Ref": "RedshiftDbName" },
+                "MasterUsername": { "Ref": "RedshiftUsername" },
+                "MasterUserPassword": { "Ref": "RedshiftPassword" },
+                "Port": { "Ref": "RedshiftPort" },
+                "PubliclyAccessible": false
             }
         },
         "InfaDBSecurityGroup": {
@@ -1100,6 +1210,18 @@
                     "Timeout": "PT3H"
                 }
             }
+        },
+		"SourceBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "AccessControl": "Private"
+            }
+        },
+        "TargetBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "AccessControl": "Private"
+            }
         }
     },
     "Outputs": {
@@ -1160,6 +1282,18 @@
         "InformaticaBDMDeveloperClient": {
             "Description": "Informatica Developer Tool Download Location",
             "Value": "https://s3-us-west-2.amazonaws.com/bdm-awsmarketplace/1010_Client_Installer_winem-64t.zip"
+        },
+		"RedshiftJdbcUrl": {
+            "Value": { "Fn::Sub": "jdbc:redshift://${RedshiftInstance.Endpoint.Address}:${RedshiftInstance.Endpoint.Port}/${RedshiftDbName}" },
+            "Export": { "Name": { "Fn::Sub": "${AWS::StackName}:RedshiftJdbcUrl" } }
+        },
+		"SourceBucket": {
+            "Value": { "Ref": "SourceBucket" },
+            "Export": { "Name": { "Fn::Sub": "${AWS::StackName}:SourceBucket" } }
+        },
+        "TargetBucket": {
+            "Value": { "Ref": "TargetBucket" },
+            "Export": { "Name": { "Fn::Sub": "${AWS::StackName}:TargetBucket" } }
         }
     }
 }
