@@ -352,25 +352,25 @@
                 "INFORMATICABDMHVM": "Informatica BDM Administration Image"
             },
             "ap-northeast-1": {
-                "INFORMATICABDMHVM": "ami-509b2f31"
+                "INFORMATICABDMHVM": "ami-6dd5620b"
             },
             "ap-northeast-2": {
-                "INFORMATICABDMHVM": "ami-6cab7c02"
+                "INFORMATICABDMHVM": "ami-6de74003"
             },
             "ap-southeast-2": {
-                "INFORMATICABDMHVM": "ami-d2053bb1"
+                "INFORMATICABDMHVM": ami-9626cef4"
             },
             "eu-west-1": {
-                "INFORMATICABDMHVM": "ami-9a4815e9"
+                "INFORMATICABDMHVM": "ami-5575dc2c"
             },
             "sa-east-1": {
-                "INFORMATICABDMHVM": "ami-6ada4406"
+                "INFORMATICABDMHVM": "ami-11eca772"
             },
             "us-east-1": {
-                "INFORMATICABDMHVM": "ami-e396a1f4"
+                "INFORMATICABDMHVM": "ami-3e1ea344"
             },
             "us-west-2": {
-                "INFORMATICABDMHVM": "ami-3b79d55b"
+                "INFORMATICABDMHVM": "ami-b6b263ce"
             }
         },
         "AWSInfoRegionMap": {
