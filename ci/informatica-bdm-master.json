@@ -1,11 +1,11 @@
 [
     {
         "ParameterKey": "AvailabilityZones",
-        "ParameterValue": "$[alfred_genaz_2]"
+        "ParameterValue": "$[alfred_getaz_2]"
     },
     {
         "ParameterKey": "DBPassword",
-        "ParameterValue": "@[alfred_genpass_18]"
+        "ParameterValue": "$[alfred_genpass_18]"
     },
     {
         "ParameterKey": "DBUser",
@@ -17,7 +17,7 @@
     },
     {
         "ParameterKey": "EMRCoreInstanceType",
-        "ParameterValue": "m3.xlarge"
+        "ParameterValue": "m4.xlarge"
     },
     {
         "ParameterKey": "EMRCoreNodes",
@@ -29,7 +29,7 @@
     },
     {
         "ParameterKey": "EMRMasterInstanceType",
-        "ParameterValue": "m3.xlarge"
+        "ParameterValue": "m4.large"
     },
     {
         "ParameterKey": "InformaticaAdminPassword",
@@ -41,11 +41,11 @@
     },
     {
         "ParameterKey": "InformaticaBDMKeyName",
-        "ParameterValue": "$[alfred_getlicensebucket]"
+        "ParameterValue": "informatica/bdm/BDMLicense.key"
     },
     {
         "ParameterKey": "InformaticaBDMKeyS3Bucket",
-        "ParameterValue": "informatica/bdm/BDMLicense.key"
+        "ParameterValue": "$[alfred_getlicensebucket]"
     },
     {
         "ParameterKey": "InformaticaServerInstanceType",
@@ -53,11 +53,7 @@
     },
     {
         "ParameterKey": "KeyPairName",
-        "ParameterValue": "cikey"
-    },
-    {
-        "ParameterKey": "NATInstanceType",
-        "ParameterValue": "t2.small"
+        "ParameterValue": "$[alfred_getkeypair]"
     },
     {
         "ParameterKey": "PrivateSubnet1CIDR",

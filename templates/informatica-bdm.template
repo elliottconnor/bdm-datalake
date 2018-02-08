@@ -1,6 +1,6 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Informatica Big Data Management QS(5014)",
+    "Description": "Informatica Big Data Management v10.1.1. This template creates Amazon EC2 instances, Elastic IPs, EMR Clusters, RDS and related resources. You will be billed for the AWS resources used if you create a stack from this template QS(5014).",
     "Metadata": {
         "AWS::CloudFormation::Interface": {
             "ParameterGroups": [
@@ -70,15 +70,6 @@
                         "InformaticaBDMKeyS3Bucket",
                         "InformaticaBDMKeyName"
                     ]
-                },
-                {
-                    "Label": {
-                        "default": "AWS Quick Start Configuration"
-                    },
-                    "Parameters": [
-                        "QSS3BucketName",
-                        "QSS3KeyPrefix"
-                    ]
                 }
             ],
             "ParameterLabels": {
@@ -127,12 +118,6 @@
                 "PublicSubnet1ID": {
                     "default": "Informatica Domain Subnet"
                 },
-                "QSS3BucketName": {
-                    "default": "Quick Start S3 Bucket Name"
-                },
-                "QSS3KeyPrefix": {
-                    "default": "Quick Start S3 Key Prefix"
-                },
                 "RemoteAccessCIDR": {
                     "default": "IP Address Range"
                 },
@@ -144,21 +129,21 @@
     },
     "Parameters": {
         "DBPassword": {
-            "Description": "Password for the Informatica domain and the Model repository database instance",
-            "MaxLength": "18",
-            "MinLength": "8",
+            "Description": "Password for the Informatica domain and the Model repository database instance. Minimum Length: 8 characters, Maximum Length: 18 characters",
+            "Type": "String",
             "NoEcho": "True",
-            "Type": "String"
+            "MinLength": "8",
+            "MaxLength": "18"
         },
         "DBSubnetIDs": {
             "Description": "Select two subnet IDs each from a different region in the VPC chosen above (such as: us-west-1b, us-west-1c)",
             "Type": "List<AWS::EC2::Subnet::Id>"
         },
         "DBUser": {
-            "Description": "Username for the Informatica domain and the Model repository database instance",
-            "MaxLength": "18",
+            "Description": "Username for the Informatica domain and the Model repository database instance. Minimum Length: 8 characters, Maximum Length: 18 characters",
+            "Type": "String",
             "MinLength": "8",
-            "Type": "String"
+            "MaxLength": "18"
         },
 		"RedshiftSubnetA": {
             "Description": "Redshift subnet A",
@@ -211,85 +196,69 @@
             "Type": "String"
         },
         "EMRCoreInstanceType": {
+            "Type": "String",
+            "Default": "m4.xlarge",
             "AllowedValues": [
-                "m3.xlarge",
-                "m3.2xlarge",
-                "m4.large",
                 "m4.xlarge",
                 "m4.2xlarge",
-                "c3.large",
-                "c3.xlarge",
-                "c3.2xlarge",
-                "c4.large",
-                "c4.xlarge",
-                "c4.2xlarge"
+                "m4.4xlarge",
+                "m4.10xlarge"
             ],
-            "Default": "m3.xlarge",
-            "Description": "Enter the instance type for the EMR core nodes. Default is m3.xlarge",
-            "Type": "String"
+            "Description": "Enter the instance type for the EMR core nodes. Default is m4.xlarge"
         },
         "EMRCoreNodes": {
-            "Description": "Enter the number of Core Nodes. Minimum is 1",
-            "MaxValue": "500",
+            "Description": "Enter the number of Core Nodes. Minimum is 1.",
+            "Type": "Number",
             "MinValue": "1",
-            "Type": "Number"
+            "MaxValue": "500"
         },
         "EMRLogBucket": {
             "Description": "Enter the S3 bucket for the EMR logs",
             "Type": "String"
         },
         "EMRMasterInstanceType": {
+            "Type": "String",
+            "Default": "m4.xlarge",
             "AllowedValues": [
-                "m3.xlarge",
-                "m3.2xlarge",
                 "m4.large",
                 "m4.xlarge",
                 "m4.2xlarge",
-                "c3.large",
-                "c3.xlarge",
-                "c3.2xlarge",
-                "c4.large",
-                "c4.xlarge",
-                "c4.2xlarge"
+                "m4.4xlarge",
+                "m4.10xlarge"
             ],
-            "Default": "m3.xlarge",
-            "Description": "Enter the instance type for the EMR master node. Default is m3.xlarge",
-            "Type": "String"
+            "Description": "Enter the instance type for the EMR master node. Default is m3.xlarge"
         },
         "InformaticaAdminPassword": {
             "Description": "Password to access Informatica Administrator",
-            "NoEcho": "True",
-            "Type": "String"
+            "Type": "String",
+            "NoEcho": "True"
         },
         "InformaticaAdminUser": {
             "Description": "Username to access Informatica Administrator",
             "Type": "String"
         },
         "InformaticaBDMKeyName": {
-            "Description": "The Informatica BDM license key name. Example: BDMLicense.key or bucketsubfolder/BDMLicense.key",
-            "Type": "String"
+            "Type": "String",
+            "Description": "The Informatica BDM license key name. Example: BDMLicense.key or bucketsubfolder/BDMLicense.key"
         },
         "InformaticaBDMKeyS3Bucket": {
-            "Description": "Enter the S3 bucket in your account that contains your Informatica BDM key",
-            "Type": "String"
+            "Type": "String",
+            "Description": "Enter the S3 bucket in your account that contains your Informatica BDM key"
         },
         "InformaticaServerInstanceType": {
+            "Type": "String",
+            "Default": "m4.large",
             "AllowedValues": [
                 "m4.large",
                 "m4.xlarge",
                 "m4.2xlarge",
                 "m4.4xlarge",
                 "m4.10xlarge",
-                "m3.large",
-                "m3.xlarge",
-                "m3.2xlarge",
                 "c3.xlarge",
                 "c3.2xlarge",
                 "c3.4xlarge"
             ],
-            "Default": "m4.large",
-            "Description": "Enter the instance type for the Informatica Administrator. Default is m4.large",
-            "Type": "String"
+            "Description": "Enter the instance type for the Informatica Administrator. Default is m4.large"
         },
         "KeyPairName": {
             "Description": "Name of an existing EC2 KeyPair to enable SSH access to the Informatica Domain",
@@ -299,6 +268,7 @@
             "Description": "Select a publically accessible subnet ID for the Informatica Domain",
             "Type": "AWS::EC2::Subnet::Id"
         },
+<<<<<<< HEAD
         "QSS3BucketName": {
             "AllowedPattern": "^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$",
             "ConstraintDescription": "Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
@@ -313,6 +283,8 @@
             "Description": "S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.",
             "Type": "String"
         },
+=======
+>>>>>>> 768aeb743feda9d0c0520fb5be05717322c853fc
         "RemoteAccessCIDR": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$",
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/x",
@@ -349,9 +321,10 @@
     "Mappings": {
         "AWSAMIRegionMap": {
             "AMI": {
-                "INFORMATICABDMHVM": "Informatica BDM Administration Image"
+                "INFABDMHVM": "Informatica BDM-10.1.1-U2Administrator-RHEL-7.2_HVM_v8-cd43828b-511e-4d5c-a443-a0b03569a334-ami-304d2226.4"
             },
             "ap-northeast-1": {
+<<<<<<< HEAD
                 "INFORMATICABDMHVM": "ami-6dd5620b"
             },
             "ap-northeast-2": {
@@ -381,33 +354,56 @@
             "ap-northeast-2": {
                 "Partition": "aws",
                 "QuickStartS3URL": "https://s3.amazonaws.com"
+=======
+                "INFABDMHVM": "ami-83e2d9e4"
+            },
+            "ap-northeast-2": {
+                "INFABDMHVM": "ami-666ab708"
+            },
+            "ap-south-1": {
+                "INFABDMHVM": "ami-3dd4a952"
+            },
+            "ap-southeast-1": {
+                "INFABDMHVM": "ami-15d65076"
+>>>>>>> 768aeb743feda9d0c0520fb5be05717322c853fc
             },
             "ap-southeast-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+                "INFABDMHVM": "ami-06abbe65"
+            },
+            "eu-central-1": {
+                "INFABDMHVM": "ami-4435ed2b"
             },
             "eu-west-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+                "INFABDMHVM": "ami-6b2d380d"
             },
             "sa-east-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+                "INFABDMHVM": "ami-20bdd34c"
             },
             "us-east-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+                "INFABDMHVM": "ami-ecf7b0fa"
+            },
+            "us-west-1": {
+                "INFABDMHVM": "ami-c77c5ca7"
             },
             "us-west-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+                "INFABDMHVM": "ami-13f69773"
             }
         }
     },
+<<<<<<< HEAD
 	"Conditions": {
 		"IsMultiNodeCluster": {
             "Fn::Not": [
                 { "Fn::Equals": [ "1", { "Ref": "RedshiftNumberOfNodes" } ] }
+=======
+    "Conditions": {
+        "NoEMRLogBucketCondition": {
+            "Fn::Equals": [
+                "",
+                {
+                    "Ref": "EMRLogBucket"
+                }
+>>>>>>> 768aeb743feda9d0c0520fb5be05717322c853fc
             ]
         }
     },
@@ -427,6 +423,13 @@
                                     "yarn.scheduler.maximum-allocation-mb": "8192",
                                     "yarn.nodemanager.vmem-check-enabled": "false"
                                 }
+                            },
+                            {
+                                "Classification": "core-site",
+                                "ConfigurationProperties": {
+                                    "hadoop.proxyuser.ec2-user.hosts": "*",
+                                    "hadoop.proxyuser.ec2-user.groups": "*"
+                                }
                             }
                         ],
                         "InstanceCount": 1,
@@ -437,6 +440,25 @@
                         "Name": "Master"
                     },
                     "CoreInstanceGroup": {
+                        "Configurations": [
+                            {
+                                "Classification": "yarn-site",
+                                "ConfigurationProperties": {
+                                    "yarn.scheduler.minimum-allocation-mb": "256",
+                                    "yarn.nodemanager.resource.memory-mb": "17000",
+                                    "yarn.nodemanager.resource.cpu-vcores": "16",
+                                    "yarn.scheduler.maximum-allocation-mb": "8192",
+                                    "yarn.nodemanager.vmem-check-enabled": "false"
+                                }
+                            },
+                            {
+                                "Classification": "core-site",
+                                "ConfigurationProperties": {
+                                    "hadoop.proxyuser.ec2-user.hosts": "*",
+                                    "hadoop.proxyuser.ec2-user.groups": "*"
+                                }
+                            }
+                        ],
                         "InstanceCount": {
                             "Ref": "EMRCoreNodes"
                         },
@@ -474,17 +496,25 @@
                     "Ref": "EMRClusterName"
                 },
                 "JobFlowRole": "EMR_EC2_DefaultRole",
-                "ReleaseLabel": "emr-4.6.0",
+                "ReleaseLabel": "emr-5.0.0",
                 "ServiceRole": "EMR_DefaultRole",
                 "LogUri": {
-                    "Fn::Join": [
-                        "",
-                        [
-                            "s3://",
-                            {
-                                "Ref": "EMRLogBucket"
-                            }
-                        ]
+                    "Fn::If": [
+                        "NoEMRLogBucketCondition",
+                        {
+                            "Ref": "AWS::NoValue"
+                        },
+                        {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "s3://",
+                                    {
+                                        "Ref": "EMRLogBucket"
+                                    }
+                                ]
+                            ]
+                        }
                     ]
                 },
                 "Applications": [
@@ -498,16 +528,13 @@
                         "ScriptBootstrapAction": {
                             "Path": {
                                 "Fn::Join": [
-                                    "/",
+                                    "",
                                     [
-                                        "s3:/",
+                                        "s3://",
                                         {
-                                            "Ref": "QSS3BucketName"
+                                            "Ref": "BootstrapS3Bucket"
                                         },
-                                        {
-                                            "Ref": "QSS3KeyPrefix"
-                                        },
-                                        "scripts/bootstrap_rpm_installer.sh"
+                                        "/bootstrap.bash"
                                     ]
                                 ]
                             }
@@ -516,7 +543,7 @@
                 ],
                 "Tags": [
                     {
-                        "Key": "IsTest",
+                        "Key": "prod",
                         "Value": {
                             "Fn::Join": [
                                 "",
@@ -530,7 +557,12 @@
                         }
                     }
                 ]
-            }
+            },
+            "DependsOn": "EMRBootstrapInstance"
+        },
+        "BootstrapS3Bucket": {
+            "Type": "AWS::S3::Bucket",
+            "DeletionPolicy": "Retain"
         },
         "InfaDomainEMRSecurityGroup": {
             "Type": "AWS::EC2::SecurityGroup",
@@ -568,6 +600,54 @@
                         "IpProtocol": "tcp",
                         "FromPort": "10000",
                         "ToPort": "10000",
+                        "SourceSecurityGroupId": {
+                            "Ref": "InfaDomainSecurityGroup"
+                        }
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "12300",
+                        "ToPort": "12600",
+                        "SourceSecurityGroupId": {
+                            "Ref": "InfaDomainSecurityGroup"
+                        }
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "8300",
+                        "ToPort": "8300",
+                        "SourceSecurityGroupId": {
+                            "Ref": "InfaDomainSecurityGroup"
+                        }
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "50010",
+                        "ToPort": "50010",
+                        "SourceSecurityGroupId": {
+                            "Ref": "InfaDomainSecurityGroup"
+                        }
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "9090",
+                        "ToPort": "9090",
+                        "SourceSecurityGroupId": {
+                            "Ref": "InfaDomainSecurityGroup"
+                        }
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "10020",
+                        "ToPort": "10020",
+                        "SourceSecurityGroupId": {
+                            "Ref": "InfaDomainSecurityGroup"
+                        }
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "9080",
+                        "ToPort": "9080",
                         "SourceSecurityGroupId": {
                             "Ref": "InfaDomainSecurityGroup"
                         }
@@ -614,17 +694,6 @@
         "InfaDB": {
             "Type": "AWS::RDS::DBInstance",
             "Properties": {
-                "DBInstanceIdentifier": {
-                    "Fn::Join": [
-                        "",
-                        [
-                            "infadb-",
-                            {
-                                "Ref": "AWS::StackName"
-                            }
-                        ]
-                    ]
-                },
                 "AllocatedStorage": "200",
                 "DBInstanceClass": "db.m4.large",
                 "DBSubnetGroupName": {
@@ -808,27 +877,6 @@
                 ]
             }
         },
-        "InstanceRole": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-                "AssumeRolePolicyDocument": {
-                    "Statement": [
-                        {
-                            "Effect": "Allow",
-                            "Principal": {
-                                "Service": [
-                                    "ec2.amazonaws.com"
-                                ]
-                            },
-                            "Action": [
-                                "sts:AssumeRole"
-                            ]
-                        }
-                    ]
-                },
-                "Path": "/"
-            }
-        },
         "RolePolicies": {
             "Type": "AWS::IAM::Policy",
             "Properties": {
@@ -867,6 +915,103 @@
                 ]
             }
         },
+        "ServerInstanceRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "ec2.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "Path": "/",
+                "ManagedPolicyArns": [
+                    "arn:aws:iam::aws:policy/AmazonElasticMapReduceFullAccess"
+                ],
+                "Policies": [
+                    {
+                        "PolicyName": "MyS3Policy",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "s3:Get*",
+                                        "s3:List*"
+                                    ],
+                                    "Resource": [
+                                        {
+                                            "Fn::Sub": "arn:aws:s3:::${BootstrapS3Bucket}/*"
+                                        },
+                                        {
+                                            "Fn::Sub": "arn:aws:s3:::${BootstrapS3Bucket}"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "ServerInstanceProfile": {
+            "Type": "AWS::IAM::InstanceProfile",
+            "Properties": {
+                "Path": "/",
+                "Roles": [
+                    {
+                        "Ref": "ServerInstanceRole"
+                    }
+                ]
+            }
+        },
+        "InstanceRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "ec2.amazonaws.com"
+                                ]
+                            },
+                            "Action": [
+                                "sts:AssumeRole"
+                            ]
+                        }
+                    ]
+                },
+                "Path": "/",
+                "Policies": [
+                    {
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Action": [
+                                        "s3:PutObject"
+                                    ],
+                                    "Resource": {
+                                        "Fn::Sub": "arn:aws:s3:::${BootstrapS3Bucket}/*"
+                                    },
+                                    "Effect": "Allow"
+                                }
+                            ]
+                        },
+                        "PolicyName": "bootstrap-s3-policy"
+                    }
+                ]
+            }
+        },
         "InstanceProfile": {
             "Type": "AWS::IAM::InstanceProfile",
             "Properties": {
@@ -874,6 +1019,202 @@
                 "Roles": [
                     {
                         "Ref": "InstanceRole"
+                    }
+                ]
+            }
+        },
+        "EMRBootstrapInstance": {
+            "Type": "AWS::EC2::Instance",
+            "Metadata": {
+                "AWS::CloudFormation::Init": {
+                    "configSets": {
+                        "InstallAndRun": [
+                            "Install",
+                            "Configure"
+                        ]
+                    },
+                    "Install": {
+                        "files": {
+                            "/home/ec2-user/Hadoop_Setup/bootstrap.bash": {
+                                "content": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "#!/bin/bash\n",
+                                            "export S3_LOCATION_RPM=s3://",
+                                            {
+                                                "Ref": "BootstrapS3Bucket"
+                                            },
+                                            "\n",
+                                            "export TEMP_DIR=/tmp/temp_infa\n",
+                                            "export INFA_RPM_INSTALL_HOME=/opt/Informatica\n",
+                                            "\n",
+                                            "export INFA_RPM_FILE_PREFIX=InformaticaHadoop-10.1.1\n",
+                                            "\n",
+                                            "sudo mkdir -p $TEMP_DIR\n",
+                                            "cd $TEMP_DIR/\n",
+                                            "sudo aws s3 cp $S3_LOCATION_RPM/$INFA_RPM_FILE_PREFIX.Linux-x64.tar.gz .\n",
+                                            "sudo tar -zxvf $INFA_RPM_FILE_PREFIX.Linux-x64.tar.gz\n",
+                                            "cd $INFA_RPM_FILE_PREFIX-1.231\n",
+                                            "sudo rpm2cpio InformaticaHadoop-10.1.1-1.x86_64.rpm | sudo cpio -idmv\n",
+                                            "sudo mkdir $INFA_RPM_INSTALL_HOME\n",
+                                            "cd opt/\n",
+                                            "sudo mv Informatica/* $INFA_RPM_INSTALL_HOME/\n",
+                                            "\n",
+                                            "cd $INFA_RPM_INSTALL_HOME\n",
+                                            "sudo chmod 777 -R $INFA_RPM_INSTALL_HOME\n",
+                                            "cd $TEMP_DIR/\n",
+                                            "sudo aws s3 cp $S3_LOCATION_RPM/SilentInput.properties .\n",
+                                            "sudo aws s3 cp $S3_LOCATION_RPM/InformaticaHadoopEBFInstall.sh .\n",
+                                            "sudo aws s3 cp $S3_LOCATION_RPM/$INFA_RPM_FILE_PREFIX.U1-Linux-x64.tar .\n",
+                                            "sudo aws s3 cp $S3_LOCATION_RPM/$INFA_RPM_FILE_PREFIX.U2-Linux-x64.tar .\n",
+                                            "sudo tar -xvf $INFA_RPM_FILE_PREFIX.U1-Linux-x64.tar\n",
+                                            "sudo tar -xvf $INFA_RPM_FILE_PREFIX.U2-Linux-x64.tar\n",
+                                            "sudo chmod 777 -R $TEMP_DIR\n",
+                                            "sudo cp SilentInput.properties EBF1011U1_HadoopEBF/SilentInput.properties\n",
+                                            "sudo cp InformaticaHadoopEBFInstall.sh EBF1011U1_HadoopEBF/InformaticaHadoopEBFInstall.sh\n",
+                                            "sudo cp SilentInput.properties EBF1011U2_HadoopEBF/SilentInput.properties\n",
+                                            "sudo cp InformaticaHadoopEBFInstall.sh EBF1011U2_HadoopEBF/InformaticaHadoopEBFInstall.sh\n",
+                                            "cd EBF1011U1_HadoopEBF\n",
+                                            "sudo ./InformaticaHadoopEBFInstall.sh -i silent\n",
+                                            "cd $TEMP_DIR/EBF1011U2_HadoopEBF\n",
+                                            "sudo ./InformaticaHadoopEBFInstall.sh -i silent\n",
+                                            "sudo rm -rf $TEMP_DIR/\n",
+                                            "\n"
+                                        ]
+                                    ]
+                                },
+                                "mode": "000600",
+                                "owner": "ec2-user",
+                                "group": "ec2-user"
+                            }
+                        }
+                    },
+                    "Configure": {
+                        "commands": {
+                            "01_cp_bootstrap_bash": {
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "sudo /usr/local/bin/aws s3 cp /home/ec2-user/Hadoop_Setup/bootstrap.bash s3://",
+                                            {
+                                                "Ref": "BootstrapS3Bucket"
+                                            },
+                                            "/bootstrap.bash\n",
+                                            "sudo /usr/local/bin/aws s3 cp /home/ec2-user/Hadoop_Setup/InformaticaHadoop-10.1.1.Linux-x64.tar.gz s3://",
+                                            {
+                                                "Ref": "BootstrapS3Bucket"
+                                            },
+                                            "/InformaticaHadoop-10.1.1.Linux-x64.tar.gz\n",
+                                            "sudo /usr/local/bin/aws s3 cp /home/ec2-user/Hadoop_Setup/InformaticaHadoop-10.1.1.U1_Linux-x64.tar s3://",
+                                            {
+                                                "Ref": "BootstrapS3Bucket"
+                                            },
+                                            "/InformaticaHadoop-10.1.1.U1-Linux-x64.tar\n",
+                                            "sudo /usr/local/bin/aws s3 cp /home/ec2-user/Hadoop_Setup/InformaticaHadoop-10.1.1.U2_Linux-x64.tar s3://",
+                                            {
+                                                "Ref": "BootstrapS3Bucket"
+                                            },
+                                            "/InformaticaHadoop-10.1.1.U2-Linux-x64.tar\n",
+                                            "sudo /usr/local/bin/aws s3 cp /home/ec2-user/Hadoop_Setup/InformaticaHadoopEBFInstall.sh s3://",
+                                            {
+                                                "Ref": "BootstrapS3Bucket"
+                                            },
+                                            "/InformaticaHadoopEBFInstall.sh\n",
+                                            "sudo /usr/local/bin/aws s3 cp /home/ec2-user/Hadoop_Setup/SilentInput.properties s3://",
+                                            {
+                                                "Ref": "BootstrapS3Bucket"
+                                            },
+                                            "/SilentInput.properties\n",
+                                            "/opt/aws/bin/cfn-signal -e $? --stack ",
+                                            {
+                                                "Ref": "AWS::StackName"
+                                            },
+                                            " --resource EMRBootstrapInstance ",
+                                            " --region ",
+                                            {
+                                                "Ref": "AWS::Region"
+                                            },
+                                            "\n",
+                                            "echo shutting down\n",
+                                            "shutdown -h now\n"
+                                        ]
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "CreationPolicy": {
+                "ResourceSignal": {
+                    "Count": "1",
+                    "Timeout": "PT55M"
+                }
+            },
+            "Properties": {
+                "KeyName": {
+                    "Ref": "KeyPairName"
+                },
+                "ImageId": {
+                    "Fn::FindInMap": [
+                        "AWSAMIRegionMap",
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        "INFABDMHVM"
+                    ]
+                },
+                "InstanceType": "m4.large",
+                "InstanceInitiatedShutdownBehavior": "terminate",
+                "IamInstanceProfile": {
+                    "Ref": "ServerInstanceProfile"
+                },
+                "SecurityGroupIds": [
+                    {
+                        "Ref": "InfaDomainSecurityGroup"
+                    },
+                    {
+                        "Ref": "RemoteAccessInfaDomainSecurityGroup"
+                    }
+                ],
+                "SubnetId": {
+                    "Ref": "PublicSubnet1ID"
+                },
+                "UserData": {
+                    "Fn::Base64": {
+                        "Fn::Join": [
+                            "",
+                            [
+                                "#!/bin/bash\n",
+                                "yum install -y aws-cfn-bootstrap\n",
+                                "echo ",
+                                {
+                                    "Ref": "BootstrapS3Bucket"
+                                },
+                                "\n",
+                                "# Install the files and packages from the metadata\n",
+                                "/opt/aws/bin/cfn-init ",
+                                "         --stack ",
+                                {
+                                    "Ref": "AWS::StackName"
+                                },
+                                "         --resource EMRBootstrapInstance ",
+                                "         --configsets InstallAndRun ",
+                                "         --region ",
+                                {
+                                    "Ref": "AWS::Region"
+                                },
+                                "\n"
+                            ]
+                        ]
+                    }
+                },
+                "Tags": [
+                    {
+                        "Key": "EMRBootstrapInstance",
+                        "Value": "prod"
                     }
                 ]
             }
@@ -968,7 +1309,9 @@
                                         "",
                                         [
                                             "#!/bin/bash\n",
-                                            "set -x\n",
+                                            "set -e\n",
+                                            "chmod 600 /var/log/cfn-init.log \n",
+                                            "chmod 600 /var/log/cfn-init-cmd.log \n",
                                             "THISHOST=$(hostname -f)\n",
                                             "sed -i -e ",
                                             {
@@ -1027,13 +1370,33 @@
                                 "owner": "ec2-user",
                                 "group": "ec2-user"
                             },
+                            "/home/ec2-user/Mercury_Setup/ebfinstall.sh": {
+                                "content": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "#!/bin/bash\n",
+                                            "sudo ps -ef | grep /opt/informatica | grep -v grep | awk '{print $2}' | xargs sudo kill -9\n",
+                                            "cd /home/ec2-user/Mercury_Setup/1011U1\n",
+                                            "sudo ./installEBF.sh\n",
+                                            "cd /home/ec2-user/Mercury_Setup/1011U2\n",
+                                            "sudo ./installEBF.sh\n",
+                                            "sudo chown -R ec2-user /opt/informatica\n",
+                                            "runuser -l ec2-user -c '/opt/informatica/tomcat/bin/infaservice.sh startup'"
+                                        ]
+                                    ]
+                                },
+                                "mode": "000700",
+                                "owner": "ec2-user",
+                                "group": "ec2-user"
+                            },
                             "/home/ec2-user/Mercury_Setup/yarninstall.sh": {
                                 "content": {
                                     "Fn::Join": [
                                         "",
                                         [
                                             "#!/bin/bash\n",
-                                            "set -x\n",
+                                            "set -e\n",
                                             "sed -i -e ",
                                             {
                                                 "Fn::Join": [
@@ -1047,7 +1410,7 @@
                                                             ]
                                                         },
                                                         "/g\"",
-                                                        " /opt/informatica/services/shared/hadoop/amazon_emr4.6.0/conf/yarn-site.xml\n"
+                                                        " /opt/informatica/services/shared/hadoop/amazon_emr5.0.0/conf/yarn-site.xml\n"
                                                     ]
                                                 ]
                                             }
@@ -1055,6 +1418,21 @@
                                     ]
                                 },
                                 "mode": "000700",
+                                "owner": "ec2-user",
+                                "group": "ec2-user"
+                            },
+                            "/home/ec2-user/Mercury_Setup/cleanupScripts.sh": {
+                                "content": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "#!/bin/bash\n",
+                                            "rm -rf /home/ec2-user/Mercury_Setup/config_template.xml \n",
+                                            "rm -rf /home/ec2-user/Mercury_Setup/replaceValues.sh \n"
+                                        ]
+                                    ]
+                                },
+                                "mode": "000770",
                                 "owner": "ec2-user",
                                 "group": "ec2-user"
                             },
@@ -1112,10 +1490,25 @@
                                 }
                             },
                             "03_MercurySetup": {
-                                "command": "sudo java -jar /home/ec2-user/Mercury_Setup/mercury_setup.jar -cf /home/ec2-user/Mercury_Setup/config_template.xml -s -uei"
+                                "command": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "touch /installation.log \n",
+                                            "chmod 600 /installation.log \n",
+                                            "sudo java -jar /home/ec2-user/Mercury_Setup/mercury_setup.jar -cf /home/ec2-user/Mercury_Setup/config_template.xml -s -uei"
+                                        ]
+                                    ]
+                                }
                             },
-                            "04_YarnSetup": {
+                            "04_EBFSetup": {
+                                "command": "sudo /home/ec2-user/Mercury_Setup/ebfinstall.sh"
+                            },
+                            "05_YarnSetup": {
                                 "command": "sudo /home/ec2-user/Mercury_Setup/yarninstall.sh"
+                            },
+                            "06_cleanupScripts": {
+                                "command": "sudo /home/ec2-user/Mercury_Setup/cleanupScripts.sh"
                             }
                         }
                     }
@@ -1131,7 +1524,7 @@
                         {
                             "Ref": "AWS::Region"
                         },
-                        "INFORMATICABDMHVM"
+                        "INFABDMHVM"
                     ]
                 },
                 "InstanceType": {
@@ -1173,7 +1566,7 @@
                         "Fn::Join": [
                             "",
                             [
-                                "#!/bin/bash -x\n",
+                                "#!/bin/bash\n",
                                 "sudo yum update -y aws-cfn-bootstrap\n",
                                 "# Install the files and packages from the metadata\n",
                                 "/opt/aws/bin/cfn-init -v ",
@@ -1209,6 +1602,7 @@
                 "ResourceSignal": {
                     "Timeout": "PT3H"
                 }
+<<<<<<< HEAD
             }
         },
 		"SourceBucket": {
@@ -1222,6 +1616,10 @@
             "Properties": {
                 "AccessControl": "Private"
             }
+=======
+            },
+            "DependsOn": "EMRCluster"
+>>>>>>> 768aeb743feda9d0c0520fb5be05717322c853fc
         }
     },
     "Outputs": {
@@ -1281,6 +1679,7 @@
         },
         "InformaticaBDMDeveloperClient": {
             "Description": "Informatica Developer Tool Download Location",
+<<<<<<< HEAD
             "Value": "https://s3-us-west-2.amazonaws.com/bdm-awsmarketplace/1010_Client_Installer_winem-64t.zip"
         },
 		"RedshiftJdbcUrl": {
@@ -1294,6 +1693,17 @@
         "TargetBucket": {
             "Value": { "Ref": "TargetBucket" },
             "Export": { "Name": { "Fn::Sub": "${AWS::StackName}:TargetBucket" } }
+=======
+            "Value": "https://s3-us-west-2.amazonaws.com/bdm-awsmarketplace/1011_Client_Installer_winem-64t.zip"
+        },
+        "InformaticaBDMDeveloperClientUpdate1": {
+            "Description": "Informatica Developer Tool Update 1 Download Location",
+            "Value": "https://s3-us-west-2.amazonaws.com/bdm-awsmarketplace/1011U1_Client_Installer_winem-64t.zip"
+        },
+        "InformaticaBDMDeveloperClientUpdate2": {
+            "Description": "Informatica Developer Tool Update 2 Download Location",
+            "Value": "https://s3-us-west-2.amazonaws.com/bdm-awsmarketplace/Informatica_1011U2_client_winem-64t.zip"
+>>>>>>> 768aeb743feda9d0c0520fb5be05717322c853fc
         }
     }
 }
