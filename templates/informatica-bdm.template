@@ -367,10 +367,10 @@
                 "INFORMATICABDMHVM": "ami-6ada4406"
             },
             "us-east-1": {
-                "INFORMATICABDMHVM": "ami-e396a1f4"
+                "INFORMATICABDMHVM": "ami-3e1ea344"
             },
             "us-west-2": {
-                "INFORMATICABDMHVM": "ami-3b79d55b"
+                "INFORMATICABDMHVM": "ami-b6b263ce"
             }
         },
         "AWSInfoRegionMap": {
